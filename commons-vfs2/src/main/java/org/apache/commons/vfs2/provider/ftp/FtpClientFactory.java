@@ -67,7 +67,32 @@ public final class FtpClientFactory {
 
         @Override
         protected FTPClient createClient(final FileSystemOptions fileSystemOptions) {
-            return new FTPClient();
+            FTPClient client = null;
+
+			FtpFileSystemConfigBuilder builder = FtpFileSystemConfigBuilder.getInstance();
+			boolean proxyEnabled = builder.getProxy(fileSystemOptions) != null;
+
+			if (proxyEnabled) {
+				Proxy proxy = builder.getProxy(fileSystemOptions);
+				InetSocketAddress address = (InetSocketAddress)proxy.address();
+				
+				final String proxyUsername = builder.getProxyUsername(fileSystemOptions);
+				final String proxyPassword = builder.getProxyPassword(fileSystemOptions);
+				
+				FtpFileSystemConfigBuilder.ProxyType proxyType = builder.getProxyType(fileSystemOptions);
+
+				if (AdvancedFtpFileSystemConfigBuilder.ProxyType.HTTP.equals(proxyType)) {
+					client = new FTPHTTPClient(address.getHostString(), address.getPort(), proxyUsername, proxyPassword);
+				} else if (FtpFileSystemConfigBuilder.ProxyType.SOCKS5.equals(proxyType)) {
+					client = new FTPSocks5Client(address.getHostString(), address.getPort(), proxyUsername, proxyPassword);
+				} else if (FtpFileSystemConfigBuilder.ProxyType.SOCKS4.equals(proxyType)) {
+					client = new FTPClient();
+					client.setProxy(proxy);
+				}
+			} else {
+				client = new FTPClient();
+			}
+			return client;
         }
 
         @Override
