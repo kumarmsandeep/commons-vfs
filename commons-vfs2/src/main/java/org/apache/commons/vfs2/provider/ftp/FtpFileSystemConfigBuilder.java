@@ -48,10 +48,11 @@ public class FtpFileSystemConfigBuilder extends FileSystemConfigBuilder {
     private static final String USER_DIR_IS_ROOT = _PREFIX + ".USER_DIR_IS_ROOT";
     private static final String PROXY_USERNAME = _PREFIX + ".PROXY_USERNAME";
     private static final String PROXY_PASSWORD = _PREFIX + ".PROXY_PASSWORD";
+    private static final String PROXY_TYPE = _PREFIX + ".PROXY_TYPE";
     
     public enum ProxyType {
-		HTTP, SOCKS4, SOCKS5;
-	}
+        HTTP, SOCKS4, SOCKS5;
+    }
 
     private FtpFileSystemConfigBuilder() {
         super("ftp.");
@@ -441,5 +442,18 @@ public class FtpFileSystemConfigBuilder extends FileSystemConfigBuilder {
 
     public String getProxyPassword(FileSystemOptions fileSystemOptions) {
         return (String) super.getParam(fileSystemOptions, PROXY_PASSWORD);
+    }
+	
+    public boolean isProxyEnabled(FileSystemOptions fileSystemOptions) {
+        ProxyType proxyType = getProxyType(fileSystemOptions);
+        return proxyType != null;
+    }
+
+    public void setProxyType(FileSystemOptions fileSystemOptions, FtpFileSystemConfigBuilder.ProxyType ftpProxyype) {
+        super.setParam(fileSystemOptions, PROXY_TYPE, ftpProxyype);
+    }
+
+    public FtpFileSystemConfigBuilder.ProxyType getProxyType(FileSystemOptions fileSystemOptions) {
+        return (AdvancedFtpFileSystemConfigBuilder.ProxyType) super.getParam(fileSystemOptions, PROXY_TYPE);
     }
 }
