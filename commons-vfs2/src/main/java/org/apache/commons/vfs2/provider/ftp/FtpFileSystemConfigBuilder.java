@@ -48,6 +48,10 @@ public class FtpFileSystemConfigBuilder extends FileSystemConfigBuilder {
     private static final String USER_DIR_IS_ROOT = _PREFIX + ".USER_DIR_IS_ROOT";
     private static final String PROXY_USERNAME = _PREFIX + ".PROXY_USERNAME";
     private static final String PROXY_PASSWORD = _PREFIX + ".PROXY_PASSWORD";
+    
+    public enum ProxyType {
+		HTTP, SOCKS4, SOCKS5;
+	}
 
     private FtpFileSystemConfigBuilder() {
         super("ftp.");
