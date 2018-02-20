@@ -46,6 +46,8 @@ public class FtpFileSystemConfigBuilder extends FileSystemConfigBuilder {
     private static final String SHORT_MONTH_NAMES = _PREFIX + ".SHORT_MONTH_NAMES";
     private static final String SO_TIMEOUT = _PREFIX + ".SO_TIMEOUT";
     private static final String USER_DIR_IS_ROOT = _PREFIX + ".USER_DIR_IS_ROOT";
+    private static final String PROXY_USERNAME = _PREFIX + ".PROXY_USERNAME";
+    private static final String PROXY_PASSWORD = _PREFIX + ".PROXY_PASSWORD";
 
     private FtpFileSystemConfigBuilder() {
         super("ftp.");
@@ -421,5 +423,21 @@ public class FtpFileSystemConfigBuilder extends FileSystemConfigBuilder {
     public void setUserDirIsRoot(final FileSystemOptions opts, final boolean userDirIsRoot) {
         setParam(opts, USER_DIR_IS_ROOT, userDirIsRoot ? Boolean.TRUE : Boolean.FALSE);
     }
+    
+    public void setProxyUsername(FileSystemOptions fileSystemOptions, String username) {
+		super.setParam(fileSystemOptions, PROXY_USERNAME, username);
+	}
+
+	public String getProxyUsername(FileSystemOptions fileSystemOptions) {
+		return (String) super.getParam(fileSystemOptions, PROXY_USERNAME);
+	}
+
+	public void setProxyPassword(FileSystemOptions fileSystemOptions, String password) {
+		super.setParam(fileSystemOptions, PROXY_PASSWORD, password);
+	}
+
+	public String getProxyPassword(FileSystemOptions fileSystemOptions) {
+		return (String) super.getParam(fileSystemOptions, PROXY_PASSWORD);
+	}
 
 }
